@@ -16,6 +16,8 @@
         <HelixTestName>$(MSBuildProjectName)-$(TargetFramework)</HelixTestName>
         <HelixUseArchive>false</HelixUseArchive>
         <LoggingTestingDisableFileLogging Condition="'$(IsHelixJob)' == 'true'">true</LoggingTestingDisableFileLogging>
+        <NodeVersion>10.15.3</NodeVersion>
+        <NodePlatformArch>linux-x64</NodeVersion>
     </PropertyGroup>
 
     <ItemGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'">
@@ -35,4 +37,8 @@
         <HelixContent Include="$(RepositoryRoot)eng\scripts\RunPowershell.cmd" />
     </ItemGroup>
 
+  <ItemGroup Condition="'$(TestDependsOnNode)' == 'true' AND '$(IsWindowsHelixQueue)' == 'false'">
+    <HelixContent Include="$(RepositoryRoot)eng\helix\content\installnode.sh" />
+    <HelixPreCommand Include="./installnode.sh $(NodeVersion) $(NodePlatformArch) " />
+  </ItemGroup>
 </Project>
